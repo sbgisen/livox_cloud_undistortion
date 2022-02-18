@@ -31,14 +31,13 @@ void LivoxMsgCbk1(const livox_ros_driver::CustomMsgConstPtr& livox_msg_in) {
 
   /// timebase 5ms ~ 50000000, so 10 ~ 1ns
 
-  unsigned long timebase_ns = livox_data[0]->timebase;
-  ros::Time timestamp;
-  timestamp.fromNSec(timebase_ns);
-
+  // unsigned long timebase_ns = livox_data[0]->timebase;
+  // ros::Time timestamp;
+  // timestamp.fromNSec(timebase_ns);
   sensor_msgs::PointCloud2 pcl_ros_msg;
   pcl::toROSMsg(pcl_in, pcl_ros_msg);
-  pcl_ros_msg.header.stamp.fromNSec(timebase_ns);
-  pcl_ros_msg.header.frame_id = "/livox";
+  pcl_ros_msg.header.stamp = livox_msg_in->header.stamp;
+  pcl_ros_msg.header.frame_id = "/livox_frame";
   pub_pcl_out1.publish(pcl_ros_msg);
   livox_data.clear();
 }
